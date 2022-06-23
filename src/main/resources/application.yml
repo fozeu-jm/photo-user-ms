@@ -1,0 +1,25 @@
+server:
+  #set port number to 0 to have the port number automatically set to random port which
+  #is useful when multiple instances of the service are launched
+  port: 0
+
+
+spring:
+  application:
+    name: user-ms
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/photoapp?useSSL=false&serverTimezone=UTC
+    username: kwd-admin
+    password: D_aQOQ*FHppH1*-c
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8010/eureka
