@@ -24,7 +24,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
@@ -33,3 +33,6 @@ spring:
         generate_statistics:
 gateway:
   ip: 192.168.1.48
+token:
+  expiration_delay: 3600
+  secret: Zuu-^@?eEpx@pg8j%Dj3W6rAEZm@44=JgcWJE$3pn_eUjA2s
