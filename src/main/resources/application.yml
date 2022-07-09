@@ -34,5 +34,5 @@ spring:
 gateway:
   ip: 192.168.1.48
 token:
-  expiration_delay: 3600
+  expiration_delay: 3600000 #one hour
   secret: Zuu-^@?eEpx@pg8j%Dj3W6rAEZm@44=JgcWJE$3pn_eUjA2s

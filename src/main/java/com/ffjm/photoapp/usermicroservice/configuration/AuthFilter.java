@@ -60,6 +60,7 @@ public class AuthFilter extends UsernamePasswordAuthenticationFilter {
                 .signWith(SignatureAlgorithm.HS512, environment.getProperty("token.secret"))
                 .compact();
         res.addHeader("token", token);
+        res.addHeader("token_expiration", environment.getProperty("token.expiration_delay"));
         res.addHeader("userId", userdetails.getUserId());
     }
 
