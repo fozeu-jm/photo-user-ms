@@ -1,5 +1,7 @@
 package com.ffjm.photoapp.usermicroservice.service;
 
+import com.ffjm.photoapp.usermicroservice.clients.PhotoServiceClient;
+import com.ffjm.photoapp.usermicroservice.clients.model.PhotoResponseModel;
 import com.ffjm.photoapp.usermicroservice.dto.UserDto;
 import com.ffjm.photoapp.usermicroservice.entity.UserEntity;
 import com.ffjm.photoapp.usermicroservice.repository.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,12 +23,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PhotoServiceClient photoServiceClient;
 
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder, PhotoServiceClient photoServiceClient) {
         this.repository = repository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.photoServiceClient = photoServiceClient;
     }
 
     @Override
@@ -48,6 +53,15 @@ public class UserServiceImpl implements UserService {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper.map(userEntity, UserDto.class);
+    }
+
+    @Override
+    public UserDto getUserById(String userId) {
+        UserEntity userEntity = repository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("User Not Found !"));
+        UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+        List<PhotoResponseModel> photoList = photoServiceClient.getUsersPhoto(userId);
+        userDto.setPhotoList(photoList);
+        return userDto;
     }
 
     @Override

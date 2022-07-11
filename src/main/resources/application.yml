@@ -12,6 +12,11 @@ eureka:
       defaultZone: http://localhost:8010/eureka
 
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   application:
     name: user-ms
   devtools:
@@ -30,7 +35,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL57Dialect
         storage_engine: innodb
         format_sql: true
-        generate_statistics:
+        generate_statistics: false
 gateway:
   ip: 192.168.1.48
 token:

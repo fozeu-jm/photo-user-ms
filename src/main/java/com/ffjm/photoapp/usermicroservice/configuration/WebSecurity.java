@@ -35,7 +35,8 @@ public class WebSecurity {
         //disable csrf on api
         http.cors().and()
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/**").hasIpAddress(environment.getProperty("gateway.ip"))
+                .authorizeRequests()
+                .antMatchers("/**").hasIpAddress(environment.getProperty("gateway.ip"))
                 .and()
                 .addFilter(getAuthFilter(authenticationManager))
                 .authenticationManager(authenticationManager)

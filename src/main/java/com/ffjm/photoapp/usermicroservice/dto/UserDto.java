@@ -1,12 +1,14 @@
 package com.ffjm.photoapp.usermicroservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ffjm.photoapp.usermicroservice.clients.model.PhotoResponseModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,4 +31,6 @@ public class UserDto implements Serializable {
     private String encryptedPassword;
 
     private String userId;
+
+    private List<PhotoResponseModel> photoList;
 }

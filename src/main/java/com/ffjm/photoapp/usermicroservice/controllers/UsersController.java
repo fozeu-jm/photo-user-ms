@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,7 +25,7 @@ public class UsersController {
     }
 
     @RequestMapping("/status/check")
-    public String status(){
+    public String status() {
         return "Working !!";
     }
 
@@ -36,11 +33,17 @@ public class UsersController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public ResponseEntity<UserReponseModel> creatUser(@Valid @RequestBody UserRequestModel userRequestModel){
+    public ResponseEntity<UserReponseModel> creatUser(@Valid @RequestBody UserRequestModel userRequestModel) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(userRequestModel, UserDto.class);
         UserReponseModel userReponseModel = modelMapper.map(userService.createUser(userDto), UserReponseModel.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(userReponseModel);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserReponseModel> getUserById(@PathVariable String userId) {
+        UserDto userDto = userService.getUserById(userId);
+        return ResponseEntity.ok().body(new ModelMapper().map(userDto, UserReponseModel.class));
     }
 }
