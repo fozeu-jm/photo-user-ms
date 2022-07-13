@@ -41,3 +41,6 @@ gateway:
 token:
   expiration_delay: 3600000 #one hour
   secret: Zuu-^@?eEpx@pg8j%Dj3W6rAEZm@44=JgcWJE$3pn_eUjA2s
+
+logging.level.com.ffjm.photoapp.usermicroservice.clients.PhotoServiceClient: DEBUG
+
