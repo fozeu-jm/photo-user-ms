@@ -2,7 +2,14 @@ spring:
   config:
     import: optional:configserver:http://localhost:8012/
 management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: beans,health,routes,httptrace
+        include: beans,health,routes,httptrace,mappings,circuitbreakerevents
