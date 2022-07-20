@@ -45,8 +45,9 @@ token:
 logging.level.com.ffjm.photoapp.usermicroservice.clients.PhotoServiceClient: DEBUG
 resilience4j:
   circuitbreaker:
+    circuit-breaker-aspect-order: 1
     instances:
-      user-ms:
+      photo-ms:
         failure-rate-threshold: 50
         automatic-transition-from-open-to-half-open-enabled: true
         wait-duration-in-open-state: 10000ms
@@ -54,4 +55,11 @@ resilience4j:
         sliding-window-size: 2
         minimum-number-of-calls: 1
         event-consumer-buffer-size: 10
-
+  retry:
+    retry-aspect-order: 2
+    instances:
+      photo-ms:
+        max-attempts: 3
+        wait-duration: 2s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 5
