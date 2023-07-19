@@ -13,7 +13,7 @@ import java.util.List;
 @FeignClient(name = "photo-ms")
 public interface PhotoServiceClient {
 
-    @GetMapping("/photo/userss/{userId}")
+    @GetMapping("/photo/users/{userId}")
     @Retry(name = "photo-ms")
     @CircuitBreaker(name = "photo-ms", fallbackMethod = "getPhotoFallback")
     List<PhotoResponseModel> getUsersPhoto(@PathVariable String userId);

@@ -7,6 +7,7 @@ import com.ffjm.photoapp.usermicroservice.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,17 @@ import javax.validation.Valid;
 @RequestMapping("/api/users")
 public class UsersController {
     private final UserService userService;
+    private final Environment env;
 
     @Autowired
-    public UsersController(UserService userService) {
+    public UsersController(UserService userService, Environment env) {
         this.userService = userService;
+        this.env = env;
     }
 
     @RequestMapping("/status/check")
     public String status() {
-        return "Working !!";
+        return String.format("Working on port %s", env.getProperty("local.server.port"));
     }
 
     @PostMapping(
