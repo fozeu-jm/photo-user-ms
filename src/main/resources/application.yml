@@ -14,6 +14,8 @@ eureka:
       defaultZone: http://localhost:8010/eureka
 
 spring:
+  config:
+    import: "optional:configserver:http://localhost:8012"
   rabbitmq:
     host: localhost
     port: 5672
@@ -50,18 +52,31 @@ resilience4j:
     circuit-breaker-aspect-order: 1
     instances:
       photo-ms:
-        failure-rate-threshold: 50
-        automatic-transition-from-open-to-half-open-enabled: true
+        failure-rate-threshold: 50 # when failure rate reaches set value the circuit breaker transitions to open state and starts short-circuiting requests
+        automatic-transition-from-open-to-half-open-enabled: true #
         wait-duration-in-open-state: 10000ms
         sliding-window-type: COUNT_BASED
-        sliding-window-size: 2
-        minimum-number-of-calls: 1
+        sliding-window-size: 2 # if failure-rate-threshold % of sliding-window-size is reached then circuit transitions to open state
+        minimum-number-of-calls: 1 # minimum number of call before calculating failure rate
         event-consumer-buffer-size: 10
   retry:
-    retry-aspect-order: 2
+    retry-aspect-order: 2 # set higher priority for retry before circuit breaaking to fall back
     instances:
       photo-ms:
         max-attempts: 3
         wait-duration: 2s
         enable-exponential-backoff: true
         exponential-backoff-multiplier: 5
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: beans,health,routes,httptrace,mappings,circuitbreakerevents
